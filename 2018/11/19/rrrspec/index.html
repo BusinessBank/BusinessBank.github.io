@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>rrrspecを導入してCI実行時間を2.5時間から10分に短縮した話 &mdash; ALL-IN Tech Blog</title>
+        <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="/assets/main.css">
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="/images/logo.png"/>
+        <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="ALL-IN Tech Blog" />
+        <meta name="title" content="rrrspecを導入してCI実行時間を2.5時間から10分に短縮した話 &mdash; ALL-IN Tech Blog">
+        <link rel="canonical" href="http://blog.all-in.xyz/2018/11/19/rrrspec">
+        
+        
+        <meta property="og:title" content="rrrspecを導入してCI実行時間を2.5時間から10分に短縮した話 &mdash; ALL-IN Tech Blog"/>
+        <meta property="og:url" content="http://blog.all-in.xyz/2018/11/19/rrrspec"/>
+        
+        
+        <meta property="og:description" content="rrrspecを導入した経緯とどうやって導入したか。結果どうなったか？"/>
+        <meta name="description" content="rrrspecを導入した経緯とどうやって導入したか。結果どうなったか？"/>
+        
+        <meta property="og:site_name" content="ALL-IN Tech Blog">
+        <script>
+ (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ ga('create', 'UA-82447482-1', 'auto');
+ ga('send', 'pageview');
+</script>
+
+        <meta name="twitter:card" content="summary">
+
+<meta name="twitter:title" content="rrrspecを導入してCI実行時間を2.5時間から10分に短縮した話 | ALL-IN Tech Blog">
+
+
+
+<meta name="twitter:description" content="rrrspecを導入した経緯とどうやって導入したか。結果どうなったか？">
+
+
+<meta name="twitter:image" content="http://blog.all-in.xyz//images/logo.png">
+<meta name="twitter:url" content="http://blog.all-in.xyz//2018/11/19/rrrspec">
+
+    </head>
+
+    <body>
+        <section class="site-nav">
+            <header>
+                <nav id="navigation">
+                    <a class="brand" href="/">
+                        <img src="/images/logo.png" alt="Inc">
+                    </a>
+                    <a href="/" class="home">ブログ</a>
+                    
+                </nav>
+                <nav class="tagline">
+                    <span>経営をアップグレードしよう</span>
+                    <a href="https://www.youtube.com/watch?v=o0_4j_SNRwE" class="btn btn-outline" target="_blank">Watch Video</a>
+                </nav>
+            </header>
+        </section>
+
+        <div class="article-cover">
+    <div>
+        
+            <img src="/images/blog-cover.jpg" class="image">
+        
+    </div>
+</div>
+<article>
+
+    <div class="container">
+        <div class="don-share" data-style="icons" data-limit="4">
+    <div class="don-share-total"></div>
+    <div class="don-share-twitter"></div>
+    <div class="don-share-facebook"></div>
+    <div class="don-share-google"></div>
+    <div class="don-share-linkedin"></div>
+</div>
+
+
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="@bigplants" target="_blank">@bigplants</a></address> &mdash;
+                <time pubdate datetime="2018-11-19" title="2018-11-19">2018-11-19</time>
+            </div>
+            <h1 class="title">rrrspecを導入してCI実行時間を2.5時間から10分に短縮した話</h1>
+            
+        </header>
+
+        <section>
+            <p>こんにちは。<br>
+エンジニアの平形（ <a href="https://twitter.com/bigplants">@bigplants</a> ）です。<br>
+最近、ランナー膝を克服して、走りたくてウズウズしている今日この頃です。<br>
+今回は、私が弊社で最近導入したrrrspecのお話をします。  </p>
+
+<hr>
+
+<h1>はじめに</h1>
+
+<p>弊社のプロダクトALL-INのrspecのCIを高速化すべくrrrspecを採用しました。<br>
+技術的な詳細の内容に踏み込むと、このブログでは伝えきれないので概要だけを書きました。<br>
+技術的な内容は近日中にQiita(<a href="https://qiita.com/bigplants">bigplants</a>)で公開します。</p>
+
+<hr>
+
+<h1>rrrspecとは？</h1>
+
+<p>Cookpad社が作ったrspecの分散テスト実行システムです。<br>
+<a href="https://github.com/cookpad/rrrspec">rrrspec</a></p>
+
+<p>rrrspecについては、こちらの記事で詳しく解説されています。<br>
+<a href="https://techlife.cookpad.com/entry/2014/03/24/rrrspec/">分散テスト実行システムRRRSpecをリリースしました</a></p>
+
+<hr>
+
+<h1>まずは結果から</h1>
+
+<p>rspecのテスト完走を高速化する事が目的だったが、どのくらい早くなったのか？</p>
+
+<p><strong>2.5時間 -&gt; 10分！！！(最短の場合)</strong>  </p>
+
+<p><strong>15倍高速化！！</strong><br>
+<strong>ドラゴンボールの界王拳かっ！</strong></p>
+
+<hr>
+
+<h1>今までなぜそんなに遅かったのか？</h1>
+
+<ul>
+<li>rspecのspecファイル数: 1400以上<br></li>
+<li>rspecのexample数の合計: 30000以上<br></li>
+</ul>
+
+<p>もともと、CircleCIの上で4コンテナでrspecを実行していました。<br>
+4コンテナでもこの遅さです。</p>
+
+<hr>
+
+<h1>CIが遅い事でどんな問題があったのか？</h1>
+
+<p>CIが2.5時間かかる状況を想像できるでしょうか？  </p>
+
+<p>以下のような問題が起こります。</p>
+
+<ul>
+<li>テストの結果が返ってくるのが半日後とかになる(複数人のジョブが行列待ちになる)<br></li>
+<li>待つのがしんどい<br></li>
+<li>というか待っていられない<br></li>
+<li>当日に結果を確認するのを諦める<br></li>
+<li>翌日にCIの結果からバグを見つけ修正。そしてまた待つ</li>
+<li>結果、大変なボトルネックに</li>
+</ul>
+
+<p>なので、重要なブランチのテストを優先すべく他のジョブをすべてキャンセルするような運用を強いられていました。<br>
+日々、slackには</p>
+
+<p>「急ぎのテストがあるので、CircleCIのジョブを全部キャンセルさせてもらいます」</p>
+
+<p>というコメントが流れていました。</p>
+
+<p>この状況は何とかせねば！と思ったわけです。</p>
+
+<hr>
+
+<h1>どうやってrrrspecのクラスタを構築したのか？</h1>
+
+<ul>
+<li>AWSのAuto Scaling Groupにworkerをspotインスタンスで構築</li>
+<li>masterのインスタンスタイプ: t2.small</li>
+<li>workerのインスタンスタイプ: c4.large</li>
+<li>workerの台数: 常時1台, rspec実行中は31台</li>
+<li>CIツール: CodeBuild(rrrspecを開始し結果を受け取る目的)</li>
+<li>GitHubのPull Requestからフック</li>
+<li>結果をslackで実行者にメンション付きで通知</li>
+</ul>
+
+<h1>躓いたポイント</h1>
+
+<h2>rrrspec-client startが遅い問題</h2>
+
+<p>当初、rrrspecをトリガする場所をCircleCIにしようとしていました。<br>
+しかし、rrrspec-client start(rrrspecを開始するコマンド)が非常に遅い状況に直面しました。<br>
+テストが開始されるまで10分以上待たされました。<br>
+調査した結果、CircleCIのコンテナからrrrspecのmasterに対してRedisのアクセスがボトルネックになってる事が分かりました。<br>
+rrrspecでは1specファイルを1taskとしています。このtask毎にredisのアクセスが複数回発生します。<br>
+CircleCIのコンテナが動いている環境はプロダクトのリージョンとは別なので通信に大幅なレイテンシが発生します。<br>
+それについてはどうにもならないので思い切ってCIを乗り換える事にしました。<br>
+AWS CodeBuildを採用したのはそれが理由です。</p>
+
+<h2>テストがランダムでコケまくる</h2>
+
+<p>原因は、slaveの数でした。<br>
+rrrspecではデフォルトでworkerのCPUコア数分のslaveを立ち上げてrspecを並列実行します。<br>
+c4.largeは2コアなので2slaveのプロセスが起動します。<br>
+しかし、接続先のMySQL, ElasticSearchはそれぞれ単一のDBしかないのでテストの途中でデータが期待したものと相違が生じます。<br>
+並列化は今後の課題です。<br>
+暫定的な対応として明示的にslaveを1つに設定しました。</p>
+
+<h2>Auto Scaling</h2>
+
+<p>rrrspecのworkerノードのワークロードは完全に上がりきる事はありません。1コアしか活用されないのでMaxでも50%前後です。<br>
+そしてスケールアウトしてもCPU負荷が下がる事はありません。すべてのworkerでフルにrspecが走ります。<br>
+なのでよくあるリニアにインスタンスが増減するオートスケールの計画は適用できません。<br>
+少し特殊ですが、1台を常時起動させておき、CPU負荷が30%以上になったら30台起動させ、30%以下になったら30台落とすという風にAuto Scaling Groupでスケーリングポリシーを設定しています。<br>
+スケーリングポリシーでは５分間隔でチェックするようにしています。  </p>
+
+<p>すべてのworkerノード(30台)が立ち上がって待ち受け状態になるのに最長10分かかります。<br>
+なので実際にはworkerの起動が10分+rspec完了10分で合計20分ほどかかる場合があります。<br>
+それでも元々2.5時間かかっていたので十分、高速化できています。<br>
+コストかけて常時30台起動するようにすれば短縮できますが、今はそこまで必要に迫られていないので暫くはこのまま運用していきます。  </p>
+
+<hr>
+
+<h1>コストは増えたのか？</h1>
+
+<p>CircleCIでは4コンテナで$150/monthかかっていました。<br>
+今回、刷新した結果、CircleCIはrspecの為に使う事はなくなったので$0/monthになりました。<br>
+※ CircleCIは別用途で2コンテナ利用していますがすべてCodeBuildに乗り換える予定です。<br>
+※ CodeBuildはオンデマンドに利用した時間だけ課金さえるので場合によってはかなり安くなります。  </p>
+
+<p>かかる費用は、</p>
+
+<ul>
+<li>CodeBuild: $40/month</li>
+<li>EC2 Spotインスタンス: $100/month</li>
+<li>rrrspec masterノード: $20/month</li>
+</ul>
+
+<p>合計: $160/month</p>
+
+<p>なのでほとんど増減はありませんでした。<br>
+Spotインスタンス万歳！</p>
+
+<hr>
+
+<h1>結果どうなったのか？</h1>
+
+<ul>
+<li>各開発者がすぐにテストの結果を確認できるので生産効率が非常に高くなった。</li>
+<li>他の人のテストの状況はほとんど気にする必要がなくなった。</li>
+</ul>
+
+<hr>
+
+<h1>まとめ</h1>
+
+<p>rspecを高速化するツールは他にもありますが、specファイルが大量にある場合は高速化するツールとしてrrrspecは有力な一つの選択肢かと思います。<br>
+今回、高速化できた上にコストも抑えられたので万々歳でした。<br>
+現在のrspecのCI環境が遅いと感じたら思い切ってCI基盤ごと乗り換えるという選択もアリかと思います。</p>
+
+<p>息をするようにCIを回していきたい。</p>
+
+<hr>
+
+<h1>エンジニア募集中！</h1>
+
+<p>ビジネスバンクグループではエンジニアを募集中しています。</p>
+
+<p>弊社が採用しているテクノロジや開発環境に興味を持った方は、
+<a href="http://bbank.jp/allin/recruit/">ここから是非エントリー</a> を！</p>
+
+        </section>
+
+        <footer>
+            <address>
+               <img src="/images/daiki.jpg">
+               <p><strong>
+                   
+                       <a rel="author" href="https://twitter.com/bigplants" title="" target="_blank">@bigplants</a>
+                   
+               </strong><br>
+                <span class="muted">Software Engineer</span>
+                </p>
+            </address>
+        </footer>
+
+        
+    </div>
+</article>
+
+
+        <footer class="site-footer">
+            <div class="container">
+                &copy; 2018
+
+                <nav>
+                    <a href="http://bbank.jp/">BUSINESS BANK GROUP, Inc.</a> &middot;
+                    <a href="/">Blog</a> &middot;
+                    <a href="https://www.youtube.com/watch?v=o0_4j_SNRwE">Product</a> &middot; 
+                    
+                </nav>
+
+                <nav class="social">
+                    
+                    
+                    <a href="/feed.xml" title="RSS Feed">
+                        <i class="icon icon-rss black"></i>
+                    </a>
+                </nav>
+            </div>
+        </footer>
+
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+<script type="text/javascript">
+    (function() {
+        var dr = document.createElement('script');
+        dr.type = 'text/javascript'; dr.async = true;
+        dr.src = '//share.donreach.com/buttons.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dr);
+    })();
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>rablのテスト方法 &mdash; ALL-IN Tech Blog</title>
+        <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="/assets/main.css">
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="/images/logo.png"/>
+        <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="ALL-IN Tech Blog" />
+        <meta name="title" content="rablのテスト方法 &mdash; ALL-IN Tech Blog">
+        <link rel="canonical" href="http://blog.all-in.xyz/2015/10/02/how-to-test-rabl">
+        
+        
+        <meta property="og:title" content="rablのテスト方法 &mdash; ALL-IN Tech Blog"/>
+        <meta property="og:url" content="http://blog.all-in.xyz/2015/10/02/how-to-test-rabl"/>
+        
+        
+        <meta property="og:description" content="プロジェクトで使用しているrablのテスト方法について書きます。インスタンス変数があった場合の良い書き方にも注目です。"/>
+        <meta name="description" content="プロジェクトで使用しているrablのテスト方法について書きます。インスタンス変数があった場合の良い書き方にも注目です。"/>
+        
+        <meta property="og:site_name" content="ALL-IN Tech Blog">
+        <script>
+ (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ ga('create', 'UA-82447482-1', 'auto');
+ ga('send', 'pageview');
+</script>
+
+        <meta name="twitter:card" content="summary">
+
+<meta name="twitter:title" content="rablのテスト方法 | ALL-IN Tech Blog">
+
+
+
+<meta name="twitter:description" content="プロジェクトで使用しているrablのテスト方法について書きます。インスタンス変数があった場合の良い書き方にも注目です。">
+
+
+<meta name="twitter:image" content="http://blog.all-in.xyz//images/logo.png">
+<meta name="twitter:url" content="http://blog.all-in.xyz//2015/10/02/how-to-test-rabl">
+
+    </head>
+
+    <body>
+        <section class="site-nav">
+            <header>
+                <nav id="navigation">
+                    <a class="brand" href="/">
+                        <img src="/images/logo.png" alt="Inc">
+                    </a>
+                    <a href="/" class="home">ブログ</a>
+                    
+                </nav>
+                <nav class="tagline">
+                    <span>経営をアップグレードしよう</span>
+                    <a href="https://www.youtube.com/watch?v=o0_4j_SNRwE" class="btn btn-outline" target="_blank">Watch Video</a>
+                </nav>
+            </header>
+        </section>
+
+        <div class="article-cover">
+    <div>
+        
+            <img src="/images/blog-cover.jpg" class="image">
+        
+    </div>
+</div>
+<article>
+
+    <div class="container">
+        <div class="don-share" data-style="icons" data-limit="4">
+    <div class="don-share-total"></div>
+    <div class="don-share-twitter"></div>
+    <div class="don-share-facebook"></div>
+    <div class="don-share-google"></div>
+    <div class="don-share-linkedin"></div>
+</div>
+
+
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="栗山 宗久" target="_blank">栗山 宗久</a></address> &mdash;
+                <time pubdate datetime="2015-10-02" title="2015-10-02">2015-10-02</time>
+            </div>
+            <h1 class="title">rablのテスト方法</h1>
+            
+        </header>
+
+        <section>
+            <p>ビジネスバンクグループエンジニアの
+<a href="https://twitter.com/kurisankaku">栗山 宗久</a> です。</p>
+
+<p>RailsでJson APIを定義する時にto_jsonやas_jsonで:onlyや:includeオプションを使ってフィールドを指定できます。<br>
+ただ、これだとControllerやAPIを定義しているクラスに依存してしまい、また可読性もあまり良くありません。<br>
+そこで、簡潔に構造を定義するためのrablを使用します。</p>
+
+<p>今回は、そのrablのテスト方法についてまとめます。<br>
+　  </p>
+
+<h2>手順</h2>
+
+<ol>
+<li>テストデータのオブジェクトを生成する</li>
+<li>Rabl::Renderer#renderを使用し、テスト対象のrabl、生成したオブジェクトを指定し、jsonを取得する</li>
+<li>取得したjsonをJson#parseでHashにする</li>
+<li>想定するテストデータのハッシュ値とJson#parseで生成されたデータの整合性を確認する</li>
+</ol>
+
+<p>　  </p>
+
+<h2>RABLの定義</h2>
+
+<p>例として次のようなRABLを作成するとします。</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#app/views/quizzes/show.rabl
+object @quiz
+attribute :title
+attribute :content
+node(:point) { |o| @level * o.base_point }
+</code></pre></div>
+<p>このrablを使用して生成されるjsonは次のようになります。</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">{
+  &quot;title&quot; : &quot;Mame chishiki&quot;,
+  &quot;content&quot;: &quot;Shigoto no gogen ha?&quot;,
+  &quot;point&quot;: 80
+}
+</code></pre></div>
+<p>記述したrablのテストを行います。
+json形式の場合、エラーの内容が判別しにくいので、jsonで生成されたデータをHash化して確認します。<br>
+　  </p>
+
+<h2>Rabl::Renderer#render</h2>
+
+<p>Rabl::Rendererクラスを使用することで、テストを行うrablのjsonを生成することができます。</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby">  <span class="c1"># https://github.com/nesquena/rabl/lib/rabl/renderer.rb</span>
+  <span class="c1"># Public: Instantiate a new renderer</span>
+  <span class="c1"># This is a standalone class used for rendering rabl templates</span>
+  <span class="c1"># outside of a framework like Rails. You may want to use</span>
+  <span class="c1"># this when using Rabl to render the request objects passed to</span>
+  <span class="c1"># message queues.</span>
+  <span class="c1">#</span>
+  <span class="c1"># Example:</span>
+  <span class="c1">#   renderer = Rabl::Renderer.new(&#39;template_name&#39;, user, { :format =&gt; &#39;json&#39;, :view_path =&gt; &#39;app/views&#39; })</span>
+  <span class="c1">#   renderer.render # =&gt; &#39;{&quot;user&quot;:{&quot;name&quot;: &quot;ivan&quot; }}&#39;</span>
+  <span class="c1">#</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">object</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="ss">:format</span>     <span class="o">=&gt;</span> <span class="ss">:json</span><span class="p">,</span>
+      <span class="ss">:scope</span>      <span class="o">=&gt;</span> <span class="nb">self</span><span class="p">,</span>
+      <span class="ss">:view_path</span>  <span class="o">=&gt;</span> <span class="o">[]</span><span class="p">,</span>
+      <span class="ss">:template</span>   <span class="o">=&gt;</span> <span class="n">source</span>
+    <span class="p">}</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+
+    <span class="vi">@options</span>  <span class="o">=</span> <span class="n">options</span>
+    <span class="vi">@object</span>   <span class="o">=</span> <span class="n">object</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">process_source</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Public: Actually render the template to the requested output format.</span>
+  <span class="c1">#</span>
+  <span class="c1"># - context_scope:</span>
+  <span class="c1">#     Override the render context_scope to the &#39;context_scope&#39; object. Defaults to self.</span>
+  <span class="c1">#</span>
+  <span class="c1"># Returns: And object representing the tranformed object in the requested format.</span>
+  <span class="c1">#   e.g. json, xml, bson, plist</span>
+  <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context_scope</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>
+    <span class="n">context_scope</span> <span class="o">||=</span> <span class="n">options</span><span class="o">[</span><span class="ss">:scope</span><span class="o">]</span> <span class="o">||</span> <span class="nb">self</span>
+
+    <span class="n">set_object_instance_variable</span> <span class="k">if</span> <span class="n">context_scope</span> <span class="o">==</span> <span class="nb">self</span>
+
+    <span class="n">locals</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:object</span> <span class="o">=&gt;</span> <span class="n">object</span> <span class="p">}</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:locals</span><span class="p">,</span> <span class="p">{}))</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">context_scope</span><span class="p">,</span> <span class="n">locals</span><span class="p">)</span><span class="o">.</span><span class="n">render</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>initializeのparameterについては、下記のような内容を設定できます。</p>
+
+<ul>
+<li>source ・・・ rablファイル名</li>
+<li>object ・・・ rablでパースするオブジェクト</li>
+<li>options ・・・ オプションを指定可能
+
+<ul>
+<li>format ・・・ フォーマットを指定</li>
+<li>scope ・・・ object以外のインスタンス変数を使用している際に利用</li>
+<li>view_path ・・・ rablファイルまでのパス</li>
+<li>template ・・・ テンプレート</li>
+</ul></li>
+</ul>
+
+<p>　  </p>
+
+<h2>テスト</h2>
+
+<p>例に上げたapp/views/quizzes/show.rablのテストを書くと次のようになります。</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># rablで生成したJsonをHash化するためのモジュール</span>
+<span class="k">module</span> <span class="nn">RablSpecHelper</span>
+  <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
+
+  <span class="k">def</span> <span class="nf">render_as_hash</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
+    <span class="n">renderer</span> <span class="o">=</span> <span class="no">Rabl</span><span class="o">::</span><span class="no">Renderer</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">object</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+    <span class="no">JSON</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">renderer</span><span class="o">.</span><span class="n">render</span><span class="p">,</span> <span class="ss">symbolize_names</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div><div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s2">&quot;rails_helper&quot;</span>
+
+<span class="n">describe</span> <span class="s2">&quot;show.rabl&quot;</span> <span class="k">do</span>
+  <span class="kp">include</span> <span class="no">RablSpecHelper</span>
+
+  <span class="n">subject</span> <span class="p">{</span> <span class="n">render_as_hash</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span> <span class="p">}</span>
+
+  <span class="c1"># インスタンス変数@levelに値を渡すためにscopeを使用</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:scope</span><span class="p">)</span> <span class="k">do</span>
+    <span class="n">scope</span> <span class="o">=</span> <span class="no">Object</span><span class="o">.</span><span class="n">new</span>
+    <span class="n">scope</span><span class="o">.</span><span class="n">instance_variable_set</span> <span class="ss">:@level</span><span class="p">,</span> <span class="mi">2</span>
+    <span class="n">scope</span>
+  <span class="k">end</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:source</span><span class="p">)</span> <span class="p">{</span> <span class="s2">&quot;show&quot;</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:object</span><span class="p">)</span> <span class="k">do</span>
+    <span class="no">OpenStruct</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">title</span><span class="p">:</span> <span class="s2">&quot;Mame chishiki&quot;</span><span class="p">,</span> <span class="ss">content</span><span class="p">:</span> <span class="s2">&quot;Shigoto no gogen ha?&quot;</span><span class="p">,</span> <span class="ss">base_point</span><span class="p">:</span> <span class="mi">40</span><span class="p">)</span>
+  <span class="k">end</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:options</span><span class="p">)</span> <span class="k">do</span>
+    <span class="p">{</span>
+      <span class="nb">format</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+      <span class="ss">scope</span><span class="p">:</span> <span class="n">scope</span><span class="p">,</span>
+      <span class="ss">view_path</span><span class="p">:</span> <span class="s2">&quot;app/views/quizzes&quot;</span>
+    <span class="p">}</span>
+  <span class="k">end</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:expected</span><span class="p">)</span> <span class="k">do</span>
+    <span class="p">{</span>
+      <span class="ss">title</span><span class="p">:</span> <span class="s2">&quot;Mame chishiki&quot;</span><span class="p">,</span>
+      <span class="ss">content</span><span class="p">:</span> <span class="s2">&quot;Shigoto no gogen ha?&quot;</span><span class="p">,</span>
+      <span class="ss">point</span><span class="p">:</span> <span class="mi">80</span>
+    <span class="p">}</span>
+  <span class="k">end</span>
+
+  <span class="n">it</span> <span class="p">{</span> <span class="n">is_expected</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span> <span class="n">expected</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>　  </p>
+
+<h2>rablのテスト方法を調べてみて</h2>
+
+<p>あまり日本語の記事を見かけなかったので、最初インスタンス変数が入っている場合の綺麗なテスト方法が分かりませんでした。<br>
+なので、本元のライブラリのテストを覗き、libを調べて作成しました。gemの場合は、そのプロジェクトのspecを見るのが一番理解が早いですね!</p>
+
+<p><a href="https://github.com/nesquena/rabl">nesquena/rabl</a></p>
+
+<p>　  </p>
+
+<h1>エンジニア募集中！</h1>
+
+<p>ビジネスバンクグループではエンジニアを募集中しています。</p>
+
+<p>弊社が採用しているテクノロジや開発環境に興味を持った方は、
+<a href="http://bbank.jp/allin/recruit/">ここから是非エントリー</a> を！</p>
+
+        </section>
+
+        <footer>
+            <address>
+               <img src="/images/kuriyama.png">
+               <p><strong>
+                   
+                       <a rel="author" href="https://twitter.com/kurisankaku" title="" target="_blank">栗山 宗久</a>
+                   
+               </strong><br>
+                <span class="muted">Software Engineer</span>
+                </p>
+            </address>
+        </footer>
+
+        
+    </div>
+</article>
+
+
+        <footer class="site-footer">
+            <div class="container">
+                &copy; 2018
+
+                <nav>
+                    <a href="http://bbank.jp/">BUSINESS BANK GROUP, Inc.</a> &middot;
+                    <a href="/">Blog</a> &middot;
+                    <a href="https://www.youtube.com/watch?v=o0_4j_SNRwE">Product</a> &middot; 
+                    
+                </nav>
+
+                <nav class="social">
+                    
+                    
+                    <a href="/feed.xml" title="RSS Feed">
+                        <i class="icon icon-rss black"></i>
+                    </a>
+                </nav>
+            </div>
+        </footer>
+
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+<script type="text/javascript">
+    (function() {
+        var dr = document.createElement('script');
+        dr.type = 'text/javascript'; dr.async = true;
+        dr.src = '//share.donreach.com/buttons.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dr);
+    })();
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>コードレビューの進め方 &mdash; ALL-IN Tech Blog</title>
+        <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="/assets/main.css">
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="/images/logo.png"/>
+        <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="ALL-IN Tech Blog" />
+        <meta name="title" content="コードレビューの進め方 &mdash; ALL-IN Tech Blog">
+        <link rel="canonical" href="http://blog.all-in.xyz/2015/10/05/how-to-review-code">
+        
+        <link rel="author" href="https://plus.google.com/+ShouTakenaka">
+        <meta property="og:title" content="コードレビューの進め方 &mdash; ALL-IN Tech Blog"/>
+        <meta property="og:url" content="http://blog.all-in.xyz/2015/10/05/how-to-review-code"/>
+        
+        <meta property="og:image" content="http://blog.all-in.xyz/images/2015-10-05-how-to-review-code/cover.png"/>
+        
+        <meta property="og:image" content="http://blog.all-in.xyz/images/logo.png"/>
+        
+        
+        <meta property="og:description" content="ALL-IN開発チームでは全員で相互レビューを行い、全コード必ず別のエンジニアにレビューしてもらうようにしています。アサインされているタスクをこなしつつレビューをしないといけないので、僕なりにどんな工夫をしてレビューを進めているかをまとめてみました。"/>
+        <meta name="description" content="ALL-IN開発チームでは全員で相互レビューを行い、全コード必ず別のエンジニアにレビューしてもらうようにしています。アサインされているタスクをこなしつつレビューをしないといけないので、僕なりにどんな工夫をしてレビューを進めているかをまとめてみました。"/>
+        
+        <meta property="og:site_name" content="ALL-IN Tech Blog">
+        <script>
+ (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ ga('create', 'UA-82447482-1', 'auto');
+ ga('send', 'pageview');
+</script>
+
+        <meta name="twitter:card" content="summary">
+
+<meta name="twitter:title" content="コードレビューの進め方 | ALL-IN Tech Blog">
+
+
+
+<meta name="twitter:description" content="ALL-IN開発チームでは全員で相互レビューを行い、全コード必ず別のエンジニアにレビューしてもらうようにしています。アサインされているタスクをこなしつつレビューをしないといけないので、僕なりにどんな工夫をしてレビューを進めているかをまとめてみました。">
+
+
+<meta name="twitter:image" content="http://blog.all-in.xyz//images/logo.png">
+<meta name="twitter:url" content="http://blog.all-in.xyz//2015/10/05/how-to-review-code">
+
+    </head>
+
+    <body>
+        <section class="site-nav">
+            <header>
+                <nav id="navigation">
+                    <a class="brand" href="/">
+                        <img src="/images/logo.png" alt="Inc">
+                    </a>
+                    <a href="/" class="home">ブログ</a>
+                    
+                </nav>
+                <nav class="tagline">
+                    <span>経営をアップグレードしよう</span>
+                    <a href="https://www.youtube.com/watch?v=o0_4j_SNRwE" class="btn btn-outline" target="_blank">Watch Video</a>
+                </nav>
+            </header>
+        </section>
+
+        <div class="article-cover">
+    <div>
+        
+            <img src="/images/2015-10-05-how-to-review-code/cover.png" class="image">
+        
+    </div>
+</div>
+<article>
+
+    <div class="container">
+        <div class="don-share" data-style="icons" data-limit="4">
+    <div class="don-share-total"></div>
+    <div class="don-share-twitter"></div>
+    <div class="don-share-facebook"></div>
+    <div class="don-share-google"></div>
+    <div class="don-share-linkedin"></div>
+</div>
+
+
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="@shoutakenaka" target="_blank">@shoutakenaka</a></address> &mdash;
+                <time pubdate datetime="2015-10-05" title="2015-10-05">2015-10-05</time>
+            </div>
+            <h1 class="title">コードレビューの進め方</h1>
+            
+        </header>
+
+        <section>
+            <p>ビジネスバンクグループ CTO の
+<a href="https://twitter.com/shoutakenaka">@shoutakenaka</a> です。</p>
+
+<p>ALL-IN開発チームでは全員で相互レビューをしていて、コードを書いたら必ず別のエンジニアにレビューしてもらうようにしています。</p>
+
+<p>必ずレビューされるとなれば書き方に気をつけるようになるし、レビューすることで他のメンバーが書いたイケてる書き方を盗めたり、仕様や書き方について疑問に思ったことをコーディング直後のホットなうちに担当のメンバーに確認できたりするので、メンバー間のコミュニケーションの促進や長期的なレベルの底上げに役立っています。</p>
+
+<p>一方で、アサインされているタスクをこなしつつレビューをしないといけないので、コーディングだけするのに比べるとそれなりに大変。<br>
+各自うまく工夫しながらやっています。</p>
+
+<p>そんななかで、僕が普段どんな風にコードレビューを進めているかをまとめてみます。</p>
+
+<h1>コンテキストによってレビューを使い分ける</h1>
+
+<p><img src="/images/2015-10-05-how-to-review-code/keyboard.png" alt="Keyboard"></p>
+
+<p>一口にコードレビューといっても、状況によってどこに重きをおいてレビューをするかというのが変わってきます。
+僕の場合、</p>
+
+<ol>
+<li>新規ジョインメンバーのコード</li>
+<li>共通部分の変更が入っている</li>
+<li>業務機能部分の変更のみ</li>
+</ol>
+
+<p>の３パターンのいずれかによって少しレビューの仕方を変えています。</p>
+
+<h2>新規ジョインメンバーのコードのレビュー</h2>
+
+<p>新たにジョインしてくれてまだ Rails とか AngularJS になれてないメンバーのコードをレビューする時は、アドバイスする箇所を探すという心持ちで、時間をなんとかひねり出して細かくコードを見ています。</p>
+
+<p>慣れるまでは Ruby っぽい書き方になっていなかったり、Rails 関連の各種 gem で提供されている便利機能で簡単にできることを独自実装していたり、ということがあります。</p>
+
+<p>そういうコードを見かけたら、「こんな書き方ができるよ」というコメントをしていきます。</p>
+
+<p>後は ActiveRecord の使い方がまずいところ (大量に DB サーバーにクエリを投げるような実装になっているところとか) がないかどうかチェックしたりしています。</p>
+
+<h2>共通部分の変更が入っているレビュー</h2>
+
+<p>共通部分 (プロジェクトフレームワーク部分) の変更が入っている場合は、そもそも共通機能として実装すべきかどうか、既存機能に影響がないかどうか、という観点で慎重にチェックします。</p>
+
+<p>共通部分の変更は影響範囲が大きい、かつ一度共通機能にしてしまうと後から手を入れにくい (特にインターフェースの変更とか手間がかかる) ので、設計の観点で色々ツッコミをいれたりします。</p>
+
+<h2>業務機能部分の変更のみのレビュー</h2>
+
+<p>上の２パターンはレビュー対象全体からするとそれほどの割合ではなくて、一番多いのが業務機能の変更に対するレビューです。</p>
+
+<p>メンバー全員分の全変更をレビューするとなるとそれなりの分量です。</p>
+
+<p>全部頭からじっくり見ることができればベストですが、現実的にそこまではしていられません。<br>
+なので、このケースの変更をレビューする時には、スピーディにチェックしつつもコメントすべき箇所を見逃さないか、</p>
+
+<p><strong>いかに重点的にチェックすべき怪しそうなコードを見つけるか</strong></p>
+
+<p>が重要になります。</p>
+
+<h1>怪しい「smell」がする場所を嗅ぎ当てる</h1>
+
+<p><img src="/images/2015-10-05-how-to-review-code/smell.png" alt="Smell"></p>
+
+<p>では、どうやって重点的にチェックすべき怪しそうなコード ＝ <strong>怪しい「smell」のするコード</strong> にあたりをつけるのか。
+僕がレビューをする時は、</p>
+
+<ol>
+<li>最初にタスクを見て、何を実装すべきなのかを確認</li>
+<li>自分ならどう実装するのかざっくりとイメージ</li>
+<li>イメージと目の前のレビュー対象のコードを見比べる</li>
+</ol>
+
+<p>をして、違和感があるかないかをチェックしていく感じで進めていきます。</p>
+
+<h2>タスクの内容を確認</h2>
+
+<p>まずはチケットを見てタスクの内容を確認し、そもそも何をしようとしている変更なのかを確認します。</p>
+
+<p>今使っている <a href="https://www.atlassian.com/ja/software/crucible/overview">Crucible</a> だと、レビューを出す時勝手に <a href="https://www.atlassian.com/ja/software/jira">JIRA</a> のチケットにリンクしてくれるので、レビューを出す側も見る側も楽チンです。</p>
+
+<p>チケットを見て、それほどボリュームの大きいタスクでなければ、自分で作るならどうするのかここでイメージします。<br>
+でかいタスクだと一気に全体をイメージするのが難しいので、コードを見ながらイメージを膨らませていく感じになります。</p>
+
+<h2>想定外のコードを追加、修正していないか</h2>
+
+<p>実装イメージを浮かべたら、まずどのファイルが修正されてるのかチェックします。</p>
+
+<p>ここで「このファイルをいじる必要ありそう」と自分が思ったファイル以外のものが変更されていると怪しい「smell」です。</p>
+
+<p>余計なことをしているか、担当メンバーが仕様を勘違いしてるか、それとも僕の方がタスクの内容を読み間違えているのか。<br>
+いずれにしろ僕が思っているのと実際の作業の間に何か齟齬がありそうなので、これらのファイルは重点的に確認した方が良さそうリストに入れます。</p>
+
+<h2>コードの「形」</h2>
+
+<p>次は一つ一つファイルを見ていきますが、コードの細かい内容は無視して全体の「形」、つまりインデントの下り具合や１ファイルあたりの行数などだけを見ます。</p>
+
+<p>ここでコードのギザギザがいい感じになっていないところ、具体的には</p>
+
+<ul>
+<li>ネストが極端に深い</li>
+<li>行が極端に長い</li>
+<li>１メソッドが長い</li>
+<li>文字が密集してごちゃごちゃしている感じがする</li>
+<li>ギザギザが長い (= １ファイルの行数が多い)</li>
+</ul>
+
+<p>といった箇所は怪しい「smell」がするので、重点確認リスト行きです。</p>
+
+<h2>名前のつけ方</h2>
+
+<p>直感的にわかりやすい名前がついているかどうかは、可読性、ひいては保守性に影響するので、識別子 (変数やメソッド名) に適切な名前がつけられているかざっとチェックします。</p>
+
+<ul>
+<li>名前が適当 (e.g. a, b, tmp...)</li>
+<li>一般的ではない略語を使っている</li>
+<li>連番のサフィックスがついている (e.g. num1, num2...)</li>
+<li>変数が名詞じゃない</li>
+<li>メソッドが動詞から始まってない</li>
+<li>英語として不自然</li>
+<li>Ruby の慣習に従った名前になっていない</li>
+</ul>
+
+<p>といったものは怪しい「smell」を発しているので要注意です。</p>
+
+<p>特に、適切な名前がつけられていない時 (どんな名前をつけたらいいか思いつかなくて苦肉の策でつけたよう名前) は、プログラムの設計に問題があって、クラス分割やメソッド分割といったリファクタリングをした方がよい可能性があるので、そういう観点で細かいチェックをします。</p>
+
+<hr>
+
+<p>これらをざっとチェックすると、集中的にレビューした方がよさそうなところが大体見えてくるので、そこを中心にレビューし、後は時間が許せばそれ以外のところも目を通す、という感じで進めていきます。</p>
+
+<h1>まとめ</h1>
+
+<p>この記事では、僕が普段どんな風にコードレビューをしているのかをまとめてみました。</p>
+
+<p>全てのメンバーのコードをしっかりとレビューするのが理想ですが、レビューに使える時間は限られています。<br>
+ですので、ジョインしたてのメンバーや影響範囲の大きい部分に修正が入っているコードは重点的にレビュー、そしてそれ以外の変更に関してはざっと確認して怪しそうなところを洗い出し、そこだけ集中的にレビューすることで、手持ちの時間を「レビューすべき変更」に効率的に使うようにしています。</p>
+
+<p>相互レビューを続けていれば全体のレベルが徐々に底上げされていくはずなので、それを信じて今後も相互レビューは継続していきます！</p>
+
+<h1>エンジニア募集中！</h1>
+
+<p>ビジネスバンクグループではエンジニアを募集中しています。</p>
+
+<p>弊社が採用しているテクノロジや開発環境に興味を持った方は、
+<a href="http://bbank.jp/allin/recruit/">ここから是非エントリー</a> を！</p>
+
+        </section>
+
+        <footer>
+            <address>
+               <img src="/images/shoutakenaka.png">
+               <p><strong>
+                   
+                       <a rel="author" href="https://twitter.com/shoutakenaka" title="" target="_blank">@shoutakenaka</a>
+                   
+               </strong><br>
+                <span class="muted">CTO, Software Engineer</span>
+                </p>
+            </address>
+        </footer>
+
+        
+    </div>
+</article>
+
+
+        <footer class="site-footer">
+            <div class="container">
+                &copy; 2018
+
+                <nav>
+                    <a href="http://bbank.jp/">BUSINESS BANK GROUP, Inc.</a> &middot;
+                    <a href="/">Blog</a> &middot;
+                    <a href="https://www.youtube.com/watch?v=o0_4j_SNRwE">Product</a> &middot; 
+                    
+                </nav>
+
+                <nav class="social">
+                    
+                    
+                    <a href="/feed.xml" title="RSS Feed">
+                        <i class="icon icon-rss black"></i>
+                    </a>
+                </nav>
+            </div>
+        </footer>
+
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+<script type="text/javascript">
+    (function() {
+        var dr = document.createElement('script');
+        dr.type = 'text/javascript'; dr.async = true;
+        dr.src = '//share.donreach.com/buttons.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dr);
+    })();
+</script>
+
+    </body>
+</html>

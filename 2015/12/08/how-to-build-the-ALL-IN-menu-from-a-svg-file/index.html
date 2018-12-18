@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>How we built the ALL-IN menu &mdash; ALL-IN Tech Blog</title>
+        <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="/assets/main.css">
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="/images/logo.png"/>
+        <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="ALL-IN Tech Blog" />
+        <meta name="title" content="How we built the ALL-IN menu &mdash; ALL-IN Tech Blog">
+        <link rel="canonical" href="http://blog.all-in.xyz/2015/12/08/how-to-build-the-ALL-IN-menu-from-a-svg-file">
+        
+        <link rel="author" href="https://plus.google.com/+JeromeSadou">
+        <meta property="og:title" content="How we built the ALL-IN menu &mdash; ALL-IN Tech Blog"/>
+        <meta property="og:url" content="http://blog.all-in.xyz/2015/12/08/how-to-build-the-ALL-IN-menu-from-a-svg-file"/>
+        
+        <meta property="og:image" content="http://blog.all-in.xyz/images/2015-12-08-how-to-build-the-ALL-IN-menu-from-a-svg-file/banner.png"/>
+        
+        <meta property="og:image" content="http://blog.all-in.xyz/images/logo.png"/>
+        
+        
+        <meta property="og:description" content="In order to build the menu for ALL-IN we opted for using the SVG format. It’s possible to create some curved tabs in full css using rounded corners but an image provides more design possibilities in our case."/>
+        <meta name="description" content="In order to build the menu for ALL-IN we opted for using the SVG format. It’s possible to create some curved tabs in full css using rounded corners but an image provides more design possibilities in our case."/>
+        
+        <meta property="og:site_name" content="ALL-IN Tech Blog">
+        <script>
+ (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ ga('create', 'UA-82447482-1', 'auto');
+ ga('send', 'pageview');
+</script>
+
+        <meta name="twitter:card" content="summary">
+
+<meta name="twitter:title" content="How we built the ALL-IN menu | ALL-IN Tech Blog">
+
+
+
+<meta name="twitter:description" content="In order to build the menu for ALL-IN we opted for using the SVG format. It’s possible to create some curved tabs in full css using rounded corners but an im...">
+
+
+<meta name="twitter:image" content="http://blog.all-in.xyz//images/logo.png">
+<meta name="twitter:url" content="http://blog.all-in.xyz//2015/12/08/how-to-build-the-ALL-IN-menu-from-a-svg-file">
+
+    </head>
+
+    <body>
+        <section class="site-nav">
+            <header>
+                <nav id="navigation">
+                    <a class="brand" href="/">
+                        <img src="/images/logo.png" alt="Inc">
+                    </a>
+                    <a href="/" class="home">ブログ</a>
+                    
+                </nav>
+                <nav class="tagline">
+                    <span>経営をアップグレードしよう</span>
+                    <a href="https://www.youtube.com/watch?v=o0_4j_SNRwE" class="btn btn-outline" target="_blank">Watch Video</a>
+                </nav>
+            </header>
+        </section>
+
+        <div class="article-cover">
+    <div>
+        
+            <img src="/images/2015-12-08-how-to-build-the-ALL-IN-menu-from-a-svg-file/banner.png" class="image">
+        
+    </div>
+</div>
+<article>
+
+    <div class="container">
+        <div class="don-share" data-style="icons" data-limit="4">
+    <div class="don-share-total"></div>
+    <div class="don-share-twitter"></div>
+    <div class="don-share-facebook"></div>
+    <div class="don-share-google"></div>
+    <div class="don-share-linkedin"></div>
+</div>
+
+
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="Jérôme Sadou" target="_blank">Jérôme Sadou</a></address> &mdash;
+                <time pubdate datetime="2015-12-08" title="2015-12-08">2015-12-08</time>
+            </div>
+            <h1 class="title">How we built the ALL-IN menu</h1>
+            
+        </header>
+
+        <section>
+            <p>In order to build the menu for ALL-IN we opted for using the SVG format. It’s possible to create curved tabs in full css using rounded corners but an image provides more design possibilities in our case.</p>
+
+<p>Therefore we chose SVG as this format compresses well and we can control the size of the image or its colours through css.</p>
+
+<h4>First we need to create the SVG file.</h4>
+
+<p>We got first an Illustrator files from where we extracted the piece of image that we intended to use to build the menu.</p>
+
+<p><img src="/images/2015-12-08-how-to-build-the-ALL-IN-menu-from-a-svg-file/menu-1.jpg" alt="ALL-IN menu"></p>
+
+<p>We isolated the image and cropped the artboard to its limits.</p>
+
+<p><img src="/images/2015-12-08-how-to-build-the-ALL-IN-menu-from-a-svg-file/menu-2.jpg" alt="ALL-IN menu"></p>
+
+<p>Then we save the file choosing the SVG options available form Illustrator.</p>
+
+<p><img src="/images/2015-12-08-how-to-build-the-ALL-IN-menu-from-a-svg-file/menu-3.jpg" alt="ALL-IN menu"></p>
+
+<h4>File usage :</h4>
+
+<p>There are different ways to use an SVG file.</p>
+
+<ol>
+<li><p>As an image (img) tag :</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;img src=&quot;image.svg&quot; alt=&quot;title&quot; id=&quot;imgsvg&quot;&gt;
+</code></pre></div>
+<p>then we can control some of it through CSS like :</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#imgsvg {
+    width: 100px;
+}
+</code></pre></div></li>
+<li><p>As a a background-image :</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;span id=&quot;imgsvg&quot;&gt;test&lt;/span&gt;
+</code></pre></div>
+<p>and control also from css :</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#imgsvg {
+    width: 100px;
+    height: 100px;
+    background-color: #fff;
+    background: url(image.svg);
+    background-size: 100px 100px;
+}
+</code></pre></div>
+<p>Support differs from the browsers, for ALL-IN we support only Chrome at the moment. But you can use some png files to replace where SVG is not supported.</p></li>
+<li><p>We can use SVG files inline also : just copying the text produced by Illustrator on saving. This is the choice we opted for. Here is our optimized slim code :</p></li>
+</ol>
+<div class="highlight"><pre><code class="language-text" data-lang="text">svg#Layer_1.style0 version=&quot;1.1&quot; viewbox=(&quot;0 0 158 56&quot;) x=&quot;0px&quot; xml:space=&quot;preserve&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; y=&quot;0px&quot; 
+    css:
+      .style0 { enable-background: new 0 0 158 56; width:160px; margin-top: -6px; }
+      .style1 { overflow: visible; opacity:  0.1; } 
+    g#XMLID_98_
+      image#XMLID_19_.style1 height=&quot;56&quot; width=&quot;158&quot; xlink:href=&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJ4AAAA4CAYAAAAMwEGIAAAACXBIWXMAAAsSAAALEgHS3X78AAAA GXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABEZJREFUeNrsnVtPE1EUhc/0BoUW BBEkgoaIRuOLaOTBRI3xh/sfNBHjJSYa411rtUUYaN3bWceeDqMUmOnMtGslK6ctmNjMl305Nzxz dHmhkUpe3dCYe3lH+D3rsriCkfANBzpfvIuxOwogDgJOAZBNwqfEi+IZcYnwJQ7dnrgp/ij+DvjU O/hZJ48AHgZNUVwVnxGfA3A6rouXxBNkI3EpYB/ELzG2AOB78Ve89/MGoDcAdCviG+Kb4guAcAkR r0wuEpcfingtAPhU/Fz8WvwlbwB6h0C3Kr4lvg/4FvH5BGu81Go8HwC+AXiPQwD+dADMFXhh6B5g XMHnBafRoIbf1VoQWwDttQPgM/ErRMdt8X5Wv1AxopGYAmSbDnQK4TR+n9ClEyCsC3gOmnXq4tPi s+JlvPYApQWvm3XwPEyTLDuRbhPQTeELU9kBMQrABWQlHym3nVX4iqHX2jBcBXS3xecR6Qhd9gGc xLOaAYw7WYav+I9od0d8CV+iyOebGwDLyE61rMNXjIh298QbmDZh55o/AEsR8P1AzbeXFfhKzn92 3gQTw+uoFwhdPmUbxFW87wA4nY55izF1+GyXOgXg7ppgopjRbjQiXxXPVpuNT+JviICZAK+AovQi GorLSLtsKEYDvhLqO4XuM2q+1FOuG/HWTLA6sYb3jHajBV8XtZ4C2DIpr2xY8KqYOrmOsUrwRqrb raDRyEzKJXjjAV8xaymX4DHldggeNTYpl+Ax5aaScgkeU24qKZfgMeWmknIJHlOuTbktM8SNBASP KVfVRtptD6veK/EZjC14uhavZ2g2TP+RyaFsJCB44yv3mINGOT1ApGc1mki/iZ7XYKpl5CulUe8R PCpc722b3sbRfYJHJQmenWKZxuib3o5lG/m6BI9KKurpc6+j9isDyH00G7GmXoJHRcE3Z4JrSubx eTvu1MuulorqdPViJt2FrtMts4h+yso71H8nviKDEY+KinzuOd06xjI+d1MvwaMSaTjsOV2beufw +a7pv5vPI3hUEnXfNKBbQAqumN7RWHuTgXEgjLJxmWKNRw1S91UAnk2/eknQFRPc0adLbLrDRe/s a6L+C8ue7f1lIyXBo45S99nGYxaZ8ZoJVjoUvheAbyf0b7tIzXp7qb3Dzyd41HGin96DXUPXq1Gs gTKtaQ7ubtHXusv5ifihwc2lBI86bvSzzUcNEXDZ9G6lD6fZBj5/ZGtDgkedBEDPiYQTJnplw873 1U1vNYTNBRUbhOY/MyEHri/m/ShUasUiRRE8iuBRFMGjCB5FETyK4FHUwHInkO2Bjo7J+B9go3Il y1PfgaGS80NdZ9NtzQ1GQypm8BomtGXeXlelOwp0u8qWCZY1aoYbQal4ZHenbIGxP7tX7PqZLt7q H1XRPVZ6sqhC8KgYwTuwH8/dXaDRbxIj0ywVd7rt24HsRrXDdhhQ1Ekj39/xtwADAGVNN1ASqbBi AAAAAElFTkSuQmCC&quot; 
+      g#XMLID_12_
+        path#XMLID_18_ d=(&quot;M147.8 40c-29.2-9.9-18.4-36-52.1-36H18.3c-8.2 0-15 6.6-15 14.8v34.8h151.3V40H147.8z&quot;)
+</code></pre></div>
+<p>The slim code (that we use to produce the HTML) is in its own file and is included where needed, to keep a cleaner code base. (We use some customs AngularJS directives to build and control the menu but I am just presenting the html and css part of it here).
+Being online we gain more control through CSS thanks to SVG custom property like for example &quot;fill&quot; to control the background color.
+We can use also special stylesheet dedicated to the SVG object through <code>&lt;style&gt;</code> tag.</p>
+
+<p>Here is a codepen reproducing the ALL-IN menu HTML/CSS structure.</p>
+
+<p data-height="268" data-theme-id="0" data-slug-hash="eJmMBY" data-default-tab="result" data-user="JeromeSadou" class='codepen'>See the Pen <a href='http://codepen.io/JeromeSadou/pen/eJmMBY/'>eJmMBY</a> by Jerome Sadou (<a href='http://codepen.io/JeromeSadou'>@JeromeSadou</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Note in the Sass tab also how we use the font-awesome icons that we control through css and custom classes.</p>
+
+<h1>エンジニア募集中！</h1>
+
+<p>ビジネスバンクグループではエンジニアを募集中しています。</p>
+
+<p>弊社が採用しているテクノロジや開発環境に興味を持った方は、
+<a href="http://bbank.jp/allin/recruit/">ここから是非エントリー</a> を！</p>
+
+        </section>
+
+        <footer>
+            <address>
+               <img src="/images/jeromesadou.jpg">
+               <p><strong>
+                   
+                       <a rel="author" href="https://twitter.com/ohayostudio" title="" target="_blank">Jérôme Sadou</a>
+                   
+               </strong><br>
+                <span class="muted">Software Engineer</span>
+                </p>
+            </address>
+        </footer>
+
+        
+    </div>
+</article>
+
+
+        <footer class="site-footer">
+            <div class="container">
+                &copy; 2018
+
+                <nav>
+                    <a href="http://bbank.jp/">BUSINESS BANK GROUP, Inc.</a> &middot;
+                    <a href="/">Blog</a> &middot;
+                    <a href="https://www.youtube.com/watch?v=o0_4j_SNRwE">Product</a> &middot; 
+                    
+                </nav>
+
+                <nav class="social">
+                    
+                    
+                    <a href="/feed.xml" title="RSS Feed">
+                        <i class="icon icon-rss black"></i>
+                    </a>
+                </nav>
+            </div>
+        </footer>
+
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+<script type="text/javascript">
+    (function() {
+        var dr = document.createElement('script');
+        dr.type = 'text/javascript'; dr.async = true;
+        dr.src = '//share.donreach.com/buttons.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dr);
+    })();
+</script>
+
+    </body>
+</html>

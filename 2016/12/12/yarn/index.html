@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>早い、安全、信頼性が高い、3点揃ったJSの新パッケージマネージャyarnがすてきな件！ &mdash; ALL-IN Tech Blog</title>
+        <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="/assets/main.css">
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="/images/logo.png"/>
+        <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="ALL-IN Tech Blog" />
+        <meta name="title" content="早い、安全、信頼性が高い、3点揃ったJSの新パッケージマネージャyarnがすてきな件！ &mdash; ALL-IN Tech Blog">
+        <link rel="canonical" href="http://blog.all-in.xyz/2016/12/12/yarn">
+        
+        
+        <meta property="og:title" content="早い、安全、信頼性が高い、3点揃ったJSの新パッケージマネージャyarnがすてきな件！ &mdash; ALL-IN Tech Blog"/>
+        <meta property="og:url" content="http://blog.all-in.xyz/2016/12/12/yarn"/>
+        
+        
+        <meta property="og:description" content="Facebookよりyarnが公開されてはや2ヶ月、もうプロダクション導入しても問題ありませんね！"/>
+        <meta name="description" content="Facebookよりyarnが公開されてはや2ヶ月、もうプロダクション導入しても問題ありませんね！"/>
+        
+        <meta property="og:site_name" content="ALL-IN Tech Blog">
+        <script>
+ (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ ga('create', 'UA-82447482-1', 'auto');
+ ga('send', 'pageview');
+</script>
+
+        <meta name="twitter:card" content="summary">
+
+<meta name="twitter:title" content="早い、安全、信頼性が高い、3点揃ったJSの新パッケージマネージャyarnがすてきな件！ | ALL-IN Tech Blog">
+
+
+
+<meta name="twitter:description" content="Facebookよりyarnが公開されてはや2ヶ月、もうプロダクション導入しても問題ありませんね！">
+
+
+<meta name="twitter:image" content="http://blog.all-in.xyz//images/logo.png">
+<meta name="twitter:url" content="http://blog.all-in.xyz//2016/12/12/yarn">
+
+    </head>
+
+    <body>
+        <section class="site-nav">
+            <header>
+                <nav id="navigation">
+                    <a class="brand" href="/">
+                        <img src="/images/logo.png" alt="Inc">
+                    </a>
+                    <a href="/" class="home">ブログ</a>
+                    
+                </nav>
+                <nav class="tagline">
+                    <span>経営をアップグレードしよう</span>
+                    <a href="https://www.youtube.com/watch?v=o0_4j_SNRwE" class="btn btn-outline" target="_blank">Watch Video</a>
+                </nav>
+            </header>
+        </section>
+
+        <div class="article-cover">
+    <div>
+        
+            <img src="/images/blog-cover.jpg" class="image">
+        
+    </div>
+</div>
+<article>
+
+    <div class="container">
+        <div class="don-share" data-style="icons" data-limit="4">
+    <div class="don-share-total"></div>
+    <div class="don-share-twitter"></div>
+    <div class="don-share-facebook"></div>
+    <div class="don-share-google"></div>
+    <div class="don-share-linkedin"></div>
+</div>
+
+
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="@hbd225" target="_blank">@hbd225</a></address> &mdash;
+                <time pubdate datetime="2016-12-12" title="2016-12-12">2016-12-12</time>
+            </div>
+            <h1 class="title">早い、安全、信頼性が高い、3点揃ったJSの新パッケージマネージャyarnがすてきな件！</h1>
+            
+        </header>
+
+        <section>
+            <p><img src="/images/2016-12-12-yarn/yarn.png" alt="Apps"></p>
+
+<p>こんにちわ！
+バックパッカーエンジニアの <a href="https://twitter.com/hbd225">@hbd225</a> です。<br>
+この寒い季節、南国でぬくぬくとナシゴレンが食べたくなりますね！</p>
+
+<p>今回はReactやImmutable.jsなどJS周りの素敵ライブラリをがしがし作ってくれてるfacebook社が、先月新しく公開してくれたyarnのご紹介です。</p>
+
+<hr>
+
+<h2>yarnて何？</h2>
+
+<p>フロントのJSの開発をする際、ライブラリの管理にnpmを使われているかと思いますが、yarnはnpmに変わる新しいパッケージマネージャです！猫かわいいです！</p>
+
+<hr>
+
+<h2>yarnの何がいいの？</h2>
+
+<p>個人的ランキングでは以下になります！
+<br>
+<br></p>
+
+<h3>1. yarn.lock によって全ての環境で同じライブラリのバージョンが揃えられる</h3>
+
+<p>開発環境の違いによるエラーなどは原因探すの大変ですよね・・！
+<br>
+<br>
+npmがライブラリの依存関係の管理に使っているpackage.jsonはバージョンナンバーが範囲で指定できるため、同じpackage.jsonを使っていてもタイミングによって異なるバージョンのライブラリがインストールされる可能性があり、バージョンナンバーの不一致から人によっては動かなくなったりします。</p>
+
+<p>yarnではyarn.lockを使うことで全ての環境で同じバージョンのライブラリがインストールされることを保証してくれるので、上記の問題は起こらなくなります。
+<br>
+<br></p>
+
+<h3>2. チェックサムによるライブラリの整合性チェック</h3>
+
+<p>yarnではライブラリのインストール時にコードを実行する前に必ずチェックサムによるパッケージの内容の整合性の確認が行われるため、正しいライブラリのみコードの実行が行われることを保証してくれます。
+<br></p>
+
+<p>クリティカルなシステムを運用する場合には助かりますね！
+<br>
+<br></p>
+
+<h3>3. ライブラリのインストールが早い！</h3>
+
+<p>いろいろな方が計測されているように、npmと比べてライブラリのインストールが早いです！嬉しいです！
+<br>
+<br></p>
+
+<h3>4. npmと使い方がほぼ変わらない</h3>
+
+<p>コマンド名は多少変わってはいますが、npmを使っていたときとほぼ同じ感じで使うことができるので乗り換えるコストが少なくてよいです。
+<br>
+<br></p>
+
+<table width="100%">
+  <thead>
+    <tr>
+      <th>npm</th>
+      <th>yarn</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>npm install</td>
+      <td>yarn</td>
+    </tr>
+    <tr>
+      <td>npm install hoge --save</td>
+      <td>yarn add hoge</td>
+    </tr>
+    <tr>
+      <td>npm uninstall hoge --save</td>
+      <td>yarn remove hoge</td>
+    </tr>
+    <tr>
+      <td>npm init</td>
+      <td>yarn init</td>
+    </tr>
+    <tr>
+      <td>npm run</td>
+      <td>yarn run</td>
+    </tr>
+    <tr>
+      <td>npm cache clean</td>
+      <td>yarn cache clean</td>
+    </tr>
+    <tr>
+      <td>npm test</td>
+      <td>yarn test</td>
+    </tr>
+    <tr>
+      <td>npm link</td>
+      <td>yarn link</td>
+    </tr>
+    <tr>
+      <td>npm outdated</td>
+      <td>yarn outdated</td>
+    </tr>
+    <tr>
+      <td>npm publish</td>
+      <td>yarn publish</td>
+    </tr>
+    <tr>
+      <td>npm login</td>
+      <td>yarn login</td>
+    </tr>
+    <tr>
+      <td>npm logout</td>
+      <td>yarn logout</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2>まとめ</h2>
+
+<p>僕は犬派でありますが、猫もかわいいですよね！</p>
+
+<hr>
+
+<h1>エンジニア募集中！</h1>
+
+<p>ビジネスバンクグループではエンジニアを募集中しています。</p>
+
+<p>弊社が採用しているテクノロジや開発環境に興味を持った方は、
+<a href="http://bbank.jp/allin/recruit/">ここから是非エントリー</a> を！</p>
+
+<style>
+table {
+  border-collapse: collapse;
+}
+th {
+  border: solid 1px;
+  padding: 0.5em;
+}
+td {
+  border: solid 1px;
+  padding: 0.5em;
+}
+</style>
+
+        </section>
+
+        <footer>
+            <address>
+               <img src="/images/ando.jpg">
+               <p><strong>
+                   
+                       <a rel="author" href="https://twitter.com/hbd225" title="" target="_blank">@hbd225</a>
+                   
+               </strong><br>
+                <span class="muted">Software Engineer</span>
+                </p>
+            </address>
+        </footer>
+
+        
+    </div>
+</article>
+
+
+        <footer class="site-footer">
+            <div class="container">
+                &copy; 2018
+
+                <nav>
+                    <a href="http://bbank.jp/">BUSINESS BANK GROUP, Inc.</a> &middot;
+                    <a href="/">Blog</a> &middot;
+                    <a href="https://www.youtube.com/watch?v=o0_4j_SNRwE">Product</a> &middot; 
+                    
+                </nav>
+
+                <nav class="social">
+                    
+                    
+                    <a href="/feed.xml" title="RSS Feed">
+                        <i class="icon icon-rss black"></i>
+                    </a>
+                </nav>
+            </div>
+        </footer>
+
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+<script type="text/javascript">
+    (function() {
+        var dr = document.createElement('script');
+        dr.type = 'text/javascript'; dr.async = true;
+        dr.src = '//share.donreach.com/buttons.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dr);
+    })();
+</script>
+
+    </body>
+</html>

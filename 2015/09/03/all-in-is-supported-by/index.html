@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ALL-IN を支える技術 &mdash; ALL-IN Tech Blog</title>
+        <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="/assets/main.css">
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="/images/logo.png"/>
+        <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="ALL-IN Tech Blog" />
+        <meta name="title" content="ALL-IN を支える技術 &mdash; ALL-IN Tech Blog">
+        <link rel="canonical" href="http://blog.all-in.xyz/2015/09/03/all-in-is-supported-by">
+        
+        <link rel="author" href="https://plus.google.com/+ShouTakenaka">
+        <meta property="og:title" content="ALL-IN を支える技術 &mdash; ALL-IN Tech Blog"/>
+        <meta property="og:url" content="http://blog.all-in.xyz/2015/09/03/all-in-is-supported-by"/>
+        
+        
+        <meta property="og:description" content="ALL-IN のシステム開発に使用している言語やフレームワークについてのお話です。"/>
+        <meta name="description" content="ALL-IN のシステム開発に使用している言語やフレームワークについてのお話です。"/>
+        
+        <meta property="og:site_name" content="ALL-IN Tech Blog">
+        <script>
+ (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ ga('create', 'UA-82447482-1', 'auto');
+ ga('send', 'pageview');
+</script>
+
+        <meta name="twitter:card" content="summary">
+
+<meta name="twitter:title" content="ALL-IN を支える技術 | ALL-IN Tech Blog">
+
+
+
+<meta name="twitter:description" content="ALL-IN のシステム開発に使用している言語やフレームワークについてのお話です。">
+
+
+<meta name="twitter:image" content="http://blog.all-in.xyz//images/logo.png">
+<meta name="twitter:url" content="http://blog.all-in.xyz//2015/09/03/all-in-is-supported-by">
+
+    </head>
+
+    <body>
+        <section class="site-nav">
+            <header>
+                <nav id="navigation">
+                    <a class="brand" href="/">
+                        <img src="/images/logo.png" alt="Inc">
+                    </a>
+                    <a href="/" class="home">ブログ</a>
+                    
+                </nav>
+                <nav class="tagline">
+                    <span>経営をアップグレードしよう</span>
+                    <a href="https://www.youtube.com/watch?v=o0_4j_SNRwE" class="btn btn-outline" target="_blank">Watch Video</a>
+                </nav>
+            </header>
+        </section>
+
+        <div class="article-cover">
+    <div>
+        
+            <img src="/images/blog-cover.jpg" class="image">
+        
+    </div>
+</div>
+<article>
+
+    <div class="container">
+        <div class="don-share" data-style="icons" data-limit="4">
+    <div class="don-share-total"></div>
+    <div class="don-share-twitter"></div>
+    <div class="don-share-facebook"></div>
+    <div class="don-share-google"></div>
+    <div class="don-share-linkedin"></div>
+</div>
+
+
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="@shoutakenaka" target="_blank">@shoutakenaka</a></address> &mdash;
+                <time pubdate datetime="2015-09-03" title="2015-09-03">2015-09-03</time>
+            </div>
+            <h1 class="title">ALL-IN を支える技術</h1>
+            
+        </header>
+
+        <section>
+            <p>ビジネスバンクグループ CTO の
+<a href="https://twitter.com/shoutakenaka">@shoutakenaka</a> です。</p>
+
+<p>「何で開発してるの？」と聞かれて、細かい説明をする時間がなさそうな時は
+単に「Rails」と答えているし、
+ステークホルダにも「Ruby on Railsというのを使って開発しています！」
+としか言っていませんが、
+実際には色々なライブラリやプロダクトの力を借りて、ALL-IN は作られています。</p>
+
+<p>今回は、そんなALL-INの開発を支えているテクノロジーについてご紹介します。</p>
+
+<h1><a href="http://rubyonrails.org/">Ruby on Rails</a></h1>
+
+<p>ALL-IN のバックエンドは Ruby on Rails で開発しています。</p>
+
+<p>ゼロから開発をスタートした ALL-IN の最初の課題が、コアの部分を何で開発するか、
+ということでした。
+色々と悩みましたが、開発スピードのプライオリティがかなり高かったので、
+僕が使える道具の中で一番スタートダッシュに向いている RoR を選択しました。</p>
+
+<p>この辺りの決断や、その後のアーキテクチャの変遷については、いずれ別の機会に
+まとめてみようと思います。</p>
+
+<h1><a href="https://angularjs.org/">AngularJS</a></h1>
+
+<p>ALL-IN のフロントエンドは AngularJS ベースで実装しています。</p>
+
+<p>元々フロントはあまり厚くしないで、できる限り RoR の寄せる方針で設計していたのですが、
+要件をまとめていく中でバックエンドには API 提供の役割を担わせて、フロントで結構がっつり
+実装した方がよさそうだと判断し、AngularJS を採用しました。</p>
+
+<p>ローカルのリポジトリを見たら、<a href="http://backbonejs.org/">Backbone.js</a> とか
+<a href="http://knockoutjs.com/">Knockout.js</a> など、いくつか試したブランチがあって、
+何を採用しようか悩んでいた形跡がありますw</p>
+
+<p>結局、フルスタックなので色々組み合わせなくても一通り必要な機能が揃うことや、
+書き方の縛りが割と強く、コーディングスタイルガイドでルールを
+たくさん作らなくてもある程度書き方が統一できそう、という辺りを重視して
+AngularJS の採用を決断しました。</p>
+
+<h1><a href="https://github.com/ruby-grape/grape">Grape</a></h1>
+
+<p>RoR の部分は一部の例外を除き、簡単な HTML を返す役割と、
+JSON のやり取りをする Web API の役割をになっています。</p>
+
+<p>その Web API の部分の構築に Grape を使っています。</p>
+
+<p>前に RoR の素のコントローラで Web API を実装したことがありましたが、
+コントローラで頑張るのに比べると、
+API 実装のためのシンプルな DSL を提供してくれて作りやすいです。</p>
+
+<h1><a href="https://github.com/nesquena/rabl">Rabl</a></h1>
+
+<p>ActiveRecord のデータを JSON に変換するのに使っています。</p>
+
+<p>以前のプロジェクトで Web API を作った際、JSON への変換 (アプリ側では Hash への変換ですが)
+を ActiveRecord のメソッドとして実装していたことがありましたが、
+ビジネスロジックと混ざりモデルがfatになってしまうという課題があったので、
+今回 Grape とセットで採用しました。</p>
+
+<p>悪くはないですが、例えばモデルのステータスによって
+JSON フォーマットを少し変更したい場合など、
+Rabl テンプレートの中で分岐をして出しわけ処理をやっているのですが、
+こういう条件付きのレンダリング処理をやるところが
+少しわかりにくい実装になるなぁ、というのが悩みです。</p>
+
+<h1><a href="https://github.com/thinreports">Thinreports</a></h1>
+
+<p>帳票作成に使っています。</p>
+
+<p>昔、猛烈に使いにくい帳票ツールに悩まされたことがあって、
+それ以来できるだけ帳票ツールは避けてきたのですが
+(PDF生成が必要になったら <a href="http://wkhtmltopdf.org/">wkhtmltopdf</a> を使ってた)、
+今回のシステムでは wkhtmltopdf だと表現するのが厳しい
+レイアウトの帳票がいくつかあったので、
+初めて Thinreports を採用しました。</p>
+
+<p>Chrome アプリとして提供されているデザイナ (前はスタンドアロンのアプリだったのですが
+いつのまにか Chrome アプリ化されてました) が使いやすく、アプリ側も Hash で
+埋め込むデータを用意するだけなので学習コストが低くていい感じです。</p>
+
+<h1><a href="https://github.com/resque/resque">Resque</a></h1>
+
+<p>オンラインバッチ処理に使っています。</p>
+
+<p>処理をキューイングして、後でバックグラウンドで走らせることができるライブラリで、
+キューを定期的にチェックして、ジョブがキューイングされていたらすぐに実行してくれます。</p>
+
+<p>メール送信や帳票生成の処理で活躍しています。</p>
+
+<h1><a href="https://github.com/javan/whenever">Whenever</a></h1>
+
+<p>バッチ処理のスケジューリングに使っています。</p>
+
+<p>わかりやすい表記法で cron の設定ができるようになります。
+決まった時刻に実行する必要のあるバッチ処理は Whenever、
+キューイングしたらできるだけすぐに実行してほしいオンラインバッチ処理は Resque、
+という感じで使い分けています。</p>
+
+<h1><a href="http://rspec.info/">RSpec</a></h1>
+
+<p>バックエンドの単体テストに使っています。</p>
+
+<p>昔 .NET の開発をメインでやっていた時は xUnit (Visual Studio Unit Test とか
+NUnit) を使っていたのですが、Ruby を使い始めた時何気なく触ってみた RSpec
+がすごく気にいってしまい、それ以来ずっとRSpec を使っています。</p>
+
+<p>そんなわけで、特に他の選択肢は考えず、このプロジェクトでも RSpec を採用しました。</p>
+
+<p>Shared Example や Shared Context、Context がネストできるあたりがお気に入りです
+(xUnit を使っていた時なんか書きにくいなぁと思っていた部分が解消されました)。</p>
+
+<h1><a href="http://capistranorb.com/">Capistrano</a></h1>
+
+<p>サーバーへのデプロイに使っています。</p>
+
+<p><a href="http://amzn.to/1M2YR4Y">Rails デプロイ</a> を読んで使い方を知ってから、
+Rails でプロダクトを作る時は必ずセットで Capistrano を使っています。</p>
+
+<p>コードの更新、DB マイグレーション、アプリケーションサーバーや Resque の再起動、
+crontab の書き換え (Whenever の設定反映) などを簡単な設定だけでできるので、
+とても重宝しています。</p>
+
+<h1>エンジニア募集中！</h1>
+
+<p>ビジネスバンクグループではエンジニアを募集中しています。</p>
+
+<p>弊社が採用しているテクノロジや開発環境に興味を持った方は、
+<a href="http://bbank.jp/allin/recruit/">ここから是非エントリー</a> を！</p>
+
+        </section>
+
+        <footer>
+            <address>
+               <img src="/images/shoutakenaka.png">
+               <p><strong>
+                   
+                       <a rel="author" href="https://twitter.com/shoutakenaka" title="" target="_blank">@shoutakenaka</a>
+                   
+               </strong><br>
+                <span class="muted">CTO, Software Engineer</span>
+                </p>
+            </address>
+        </footer>
+
+        
+    </div>
+</article>
+
+
+        <footer class="site-footer">
+            <div class="container">
+                &copy; 2018
+
+                <nav>
+                    <a href="http://bbank.jp/">BUSINESS BANK GROUP, Inc.</a> &middot;
+                    <a href="/">Blog</a> &middot;
+                    <a href="https://www.youtube.com/watch?v=o0_4j_SNRwE">Product</a> &middot; 
+                    
+                </nav>
+
+                <nav class="social">
+                    
+                    
+                    <a href="/feed.xml" title="RSS Feed">
+                        <i class="icon icon-rss black"></i>
+                    </a>
+                </nav>
+            </div>
+        </footer>
+
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+<script type="text/javascript">
+    (function() {
+        var dr = document.createElement('script');
+        dr.type = 'text/javascript'; dr.async = true;
+        dr.src = '//share.donreach.com/buttons.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dr);
+    })();
+</script>
+
+    </body>
+</html>

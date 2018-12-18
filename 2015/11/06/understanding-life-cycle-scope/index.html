@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AngularJS ScopeのLife Cycleについて &mdash; ALL-IN Tech Blog</title>
+        <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="/assets/main.css">
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="/images/logo.png"/>
+        <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="ALL-IN Tech Blog" />
+        <meta name="title" content="AngularJS ScopeのLife Cycleについて &mdash; ALL-IN Tech Blog">
+        <link rel="canonical" href="http://blog.all-in.xyz/2015/11/06/understanding-life-cycle-scope">
+        
+        
+        <meta property="og:title" content="AngularJS ScopeのLife Cycleについて &mdash; ALL-IN Tech Blog"/>
+        <meta property="og:url" content="http://blog.all-in.xyz/2015/11/06/understanding-life-cycle-scope"/>
+        
+        <meta property="og:image" content="http://blog.all-in.xyz/images/2015-11-06-understanding-life-cycle-scope/header_image.jpg"/>
+        
+        <meta property="og:image" content="http://blog.all-in.xyz/images/logo.png"/>
+        
+        
+        <meta property="og:description" content="公式ドキュメントをもとにscopeのlife cycleを整理します。"/>
+        <meta name="description" content="公式ドキュメントをもとにscopeのlife cycleを整理します。"/>
+        
+        <meta property="og:site_name" content="ALL-IN Tech Blog">
+        <script>
+ (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ ga('create', 'UA-82447482-1', 'auto');
+ ga('send', 'pageview');
+</script>
+
+        <meta name="twitter:card" content="summary">
+
+<meta name="twitter:title" content="AngularJS ScopeのLife Cycleについて | ALL-IN Tech Blog">
+
+
+
+<meta name="twitter:description" content="公式ドキュメントをもとにscopeのlife cycleを整理します。">
+
+
+<meta name="twitter:image" content="http://blog.all-in.xyz//images/logo.png">
+<meta name="twitter:url" content="http://blog.all-in.xyz//2015/11/06/understanding-life-cycle-scope">
+
+    </head>
+
+    <body>
+        <section class="site-nav">
+            <header>
+                <nav id="navigation">
+                    <a class="brand" href="/">
+                        <img src="/images/logo.png" alt="Inc">
+                    </a>
+                    <a href="/" class="home">ブログ</a>
+                    
+                </nav>
+                <nav class="tagline">
+                    <span>経営をアップグレードしよう</span>
+                    <a href="https://www.youtube.com/watch?v=o0_4j_SNRwE" class="btn btn-outline" target="_blank">Watch Video</a>
+                </nav>
+            </header>
+        </section>
+
+        <div class="article-cover">
+    <div>
+        
+            <img src="/images/2015-11-06-understanding-life-cycle-scope/header_image.jpg" class="image">
+        
+    </div>
+</div>
+<article>
+
+    <div class="container">
+        <div class="don-share" data-style="icons" data-limit="4">
+    <div class="don-share-total"></div>
+    <div class="don-share-twitter"></div>
+    <div class="don-share-facebook"></div>
+    <div class="don-share-google"></div>
+    <div class="don-share-linkedin"></div>
+</div>
+
+
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="栗山 宗久" target="_blank">栗山 宗久</a></address> &mdash;
+                <time pubdate datetime="2015-11-06" title="2015-11-06">2015-11-06</time>
+            </div>
+            <h1 class="title">AngularJS ScopeのLife Cycleについて</h1>
+            
+        </header>
+
+        <section>
+            <p>ビジネスバンクグループエンジニアの
+<a href="https://twitter.com/kurisankaku">栗山 宗久</a> です。</p>
+
+<p>AngularJSの要であるscopeのライフサイクルについて、公式ドキュメントを要約しつつ、確認していきたいと思います。<br>
+<a href="https://docs.angularjs.org/guide/scope">https://docs.angularjs.org/guide/scope</a>
+　  </p>
+
+<hr>
+
+<h2>Scopeとは？</h2>
+
+<p>そもそもスコープとは、アプリケーションのコントローラーとビューを繋げる糊の役割を果たします。特徴としては、</p>
+
+<ul>
+<li>モデルの変更を見張るAPI($watch)を提供</li>
+<li>&quot;Angular領域&quot;(コントローラー、サービス、Angularイベントハンドラ)の外部から、 ビューへシステムを通してモデル変更を伝搬するためのAPI($apply)を提供</li>
+<li>共有モデルのプロパティへのアクセスを提供しつつ、アプリケーションの分離コンポーネントを入れ子にすることができる。 スコープ(のプロトタイプ)は、その親スコープからプロパティを継承する</li>
+<li>評価対象の式 に対してコンテキストを提供。 例えば、式は、usernameプロパティが定義された特定のスコープに対して評価される</li>
+</ul>
+
+<p>となります。
+ここで注目するのが&quot;<strong>$watch</strong>&quot;の提供です。モデルの変更を監視する$watchに監視したいモデルを登録することにより、モデルの変更に対応できます。</p>
+
+<hr>
+
+<h2>Scopeのライフサイクル</h2>
+
+<p>Scopeのライフサイクルは、次の手順で実行されます。</p>
+
+<h3>1. Creation</h3>
+
+<p>アプリケーションの起動中に、$injectorによってルートスコープが作成されます。 そして、テンプレート（View)のリンク中に、ディレクてイプはそれぞれ新しい子スコープを作成します。</p>
+
+<h3>2. Watcher registration</h3>
+
+<p>テンプレート(View)のリンク中に、ディレクティブはスコープにwatchesを登録していきます。これらのwatchesは、DOMへモデルの値を伝える際に使用されます。</p>
+
+<h3>3. Model mutation</h3>
+
+<p>値の変更を適切に監視するためには、scope.$apply()内で値の変更を実行すべきです。これはAngular実行コンテキストの外部で、ブラウザがJavaScriptコードの実行を呼び出す場合、 Angularがモデルの変更を認識することが出来ないからです。<br>
+　<br>
+適切にモデルの変更を処理するためには、$apply()メソッドを使用して、Angularの実行コンテキストに入れる必要があります。$apply()メソッド内で実行されたモデル変更のみが、Angularによって適切に処理されます。<br>
+　<br>
+例えば、もしディレクティブがng-clickのような、DOMイベントをリッスンしていた場合、$apply()メソッド内で式を評価しなければいけません。<br>
+　<br>
+AngularのAPIはこれを暗黙的に行うため、コントローラー内での同期処理、または$httpや$timeout等のサービスでの非同期処理の際に$applyを呼び出す必要はありません。  </p>
+
+<h3>4. Mutation observation</h3>
+
+<p>$applyの最後に、Angularはルートスコープ上で$digestサイクルを実行し、全ての子スコープに伝搬します。$digestサイクル中は、全ての$watch式または関数はモデルの変更を確認し、もし変更されていれば$watchリスナーが呼び出されます。</p>
+
+<h3>5. Scope destruction</h3>
+
+<p>子スコープが不要になった場合、scope.$destroy()のAPIを介してそれらを削除するのは、子スコープ作成者の責務です。これにより、子スコープの$digest呼び出しによる伝搬を停止し、ガベージコレクタが、子スコープモデルに使用されていたメモリを開放出来るようにします。</p>
+
+<p>次にこのScopeのライフサイクルがどのように、ブラウザのイベントループと統合されるかを見ていきます。</p>
+
+<hr>
+
+<h2>ブラウザーのイベントループとの統合</h2>
+
+<p>次の図(<a href="https://docs.angularjs.org/guide/scope">公式ドキュメントより引用</a>)は、Angularがどのようにブラウザのイベントループによって作用しているかを説明したものです。</p>
+
+<p><img src="/images/2015-11-06-understanding-life-cycle-scope/concepts-runtime.png" alt="concepts-runtime"></p>
+
+<p>まず、ブラウザのイベントループについて説明します。ブラウザのイベントループは、</p>
+
+<ol>
+<li>イベントが到達するのを待ち受ける。イベントには、ユーザー操作、タイマーイベント、ネットワークイベント(サーバからのレスポンス)がある。</li>
+<li>イベントのコールバックが実行され、JavaScriptのコンテキストに入る。コールバックはDOM構造を変更することが可能。</li>
+<li>1度コールバックが実行されると、ブラウザはJavaScriptコンテキストを残し、DOMの変更を元にしたビューを再描画する。</li>
+</ol>
+
+<p>の様になります。Angularは、この標準のJavaScriptフローを自身のイベント処理ループを割り当てることで修正します。</p>
+
+<p>では、実際にどのように動作していくのかを、データバインディングによる反映方法（下記を例として）を用いて説明します。</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">ng-controller=</span><span class="s">&quot;MyController&quot;</span><span class="nt">&gt;</span>
+  Your name: <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">ng-model=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;hr&gt;</span>
+  {{name}}
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div>
+<h3>1. コンパイルフェーズ</h3>
+
+<ol>
+<li>ng-modelとinputディレクティブに、input制御上でのkeydownリスナーを設定。</li>
+<li>interpolationによって、nameの変更が$watchに通知されるように設定される。</li>
+</ol>
+
+<h3>2. ランタイムフェーズ</h3>
+
+<ol>
+<li>input上で<code>&#39;X&#39;</code>キーを押すと、ブラウザがkeydownイベントを発生させる。</li>
+<li>inputディレクティブは、inputの値の変更を捕捉し、Angular実行コンテキスト内部のアプリケーションモデルを変更するために<code>$apply(&quot;name = &#39;X&#39;;&quot;)</code>を呼び出す。</li>
+<li>Angularは<code>name = &#39;X&#39;;</code>をモデルに対し適用。</li>
+<li>$digestループを開始。</li>
+<li>$watchリストはnameプロパティの変更を見つけ、interpolationに通知しDOMを更新して変更するように伝える。</li>
+<li>Angularはコンテキストの実行を終了し、keydownイベントとそのJavaScriptのコンテキストの実行が終了する。</li>
+<li>ブラウザはテキストの更新で再描画する。</li>
+</ol>
+
+<p>このように$apply, $digestを通して変更を行っていきます。<br>
+　<br>
+ここで気になるのが、Angularを使わないライブラリでDOMの操作を行った時に、どうすればいいかということです。
+この場合は、上記に書いたように、$applyを使うべきなんですが、その説明は次回にしたいと思います。</p>
+
+<hr>
+
+<h1>エンジニア募集中！</h1>
+
+<p>ビジネスバンクグループではエンジニアを募集中しています。</p>
+
+<p>弊社が採用しているテクノロジや開発環境に興味を持った方は、
+<a href="http://bbank.jp/allin/recruit/">ここから是非エントリー</a> を！</p>
+
+        </section>
+
+        <footer>
+            <address>
+               <img src="/images/kuriyama.png">
+               <p><strong>
+                   
+                       <a rel="author" href="https://twitter.com/kurisankaku" title="" target="_blank">栗山 宗久</a>
+                   
+               </strong><br>
+                <span class="muted">Software Engineer</span>
+                </p>
+            </address>
+        </footer>
+
+        
+    </div>
+</article>
+
+
+        <footer class="site-footer">
+            <div class="container">
+                &copy; 2018
+
+                <nav>
+                    <a href="http://bbank.jp/">BUSINESS BANK GROUP, Inc.</a> &middot;
+                    <a href="/">Blog</a> &middot;
+                    <a href="https://www.youtube.com/watch?v=o0_4j_SNRwE">Product</a> &middot; 
+                    
+                </nav>
+
+                <nav class="social">
+                    
+                    
+                    <a href="/feed.xml" title="RSS Feed">
+                        <i class="icon icon-rss black"></i>
+                    </a>
+                </nav>
+            </div>
+        </footer>
+
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+<script type="text/javascript">
+    (function() {
+        var dr = document.createElement('script');
+        dr.type = 'text/javascript'; dr.async = true;
+        dr.src = '//share.donreach.com/buttons.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dr);
+    })();
+</script>
+
+    </body>
+</html>

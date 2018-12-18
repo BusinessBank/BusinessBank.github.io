@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>(AngularJS, JQuery) Enterキーでフォーカスを遷移させるディレクティブを作る &mdash; ALL-IN Tech Blog</title>
+        <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="/assets/main.css">
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="/images/logo.png"/>
+        <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="ALL-IN Tech Blog" />
+        <meta name="title" content="(AngularJS, JQuery) Enterキーでフォーカスを遷移させるディレクティブを作る &mdash; ALL-IN Tech Blog">
+        <link rel="canonical" href="http://blog.all-in.xyz/2015/12/18/how-to-move-focus-by-enter-key">
+        
+        
+        <meta property="og:title" content="(AngularJS, JQuery) Enterキーでフォーカスを遷移させるディレクティブを作る &mdash; ALL-IN Tech Blog"/>
+        <meta property="og:url" content="http://blog.all-in.xyz/2015/12/18/how-to-move-focus-by-enter-key"/>
+        
+        
+        <meta property="og:description" content="Enterキーでフォーカスを遷移させるAngularJSのディレクティブの作り方についてまとめてみました。"/>
+        <meta name="description" content="Enterキーでフォーカスを遷移させるAngularJSのディレクティブの作り方についてまとめてみました。"/>
+        
+        <meta property="og:site_name" content="ALL-IN Tech Blog">
+        <script>
+ (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ ga('create', 'UA-82447482-1', 'auto');
+ ga('send', 'pageview');
+</script>
+
+        <meta name="twitter:card" content="summary">
+
+<meta name="twitter:title" content="(AngularJS, JQuery) Enterキーでフォーカスを遷移させるディレクティブを作る | ALL-IN Tech Blog">
+
+
+
+<meta name="twitter:description" content="Enterキーでフォーカスを遷移させるAngularJSのディレクティブの作り方についてまとめてみました。">
+
+
+<meta name="twitter:image" content="http://blog.all-in.xyz//images/logo.png">
+<meta name="twitter:url" content="http://blog.all-in.xyz//2015/12/18/how-to-move-focus-by-enter-key">
+
+    </head>
+
+    <body>
+        <section class="site-nav">
+            <header>
+                <nav id="navigation">
+                    <a class="brand" href="/">
+                        <img src="/images/logo.png" alt="Inc">
+                    </a>
+                    <a href="/" class="home">ブログ</a>
+                    
+                </nav>
+                <nav class="tagline">
+                    <span>経営をアップグレードしよう</span>
+                    <a href="https://www.youtube.com/watch?v=o0_4j_SNRwE" class="btn btn-outline" target="_blank">Watch Video</a>
+                </nav>
+            </header>
+        </section>
+
+        <div class="article-cover">
+    <div>
+        
+            <img src="/images/blog-cover.jpg" class="image">
+        
+    </div>
+</div>
+<article>
+
+    <div class="container">
+        <div class="don-share" data-style="icons" data-limit="4">
+    <div class="don-share-total"></div>
+    <div class="don-share-twitter"></div>
+    <div class="don-share-facebook"></div>
+    <div class="don-share-google"></div>
+    <div class="don-share-linkedin"></div>
+</div>
+
+
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="高橋 慶太" target="_blank">高橋 慶太</a></address> &mdash;
+                <time pubdate datetime="2015-12-18" title="2015-12-18">2015-12-18</time>
+            </div>
+            <h1 class="title">(AngularJS, JQuery) Enterキーでフォーカスを遷移させるディレクティブを作る</h1>
+            
+        </header>
+
+        <section>
+            <p>ビジネスバンクグループ エンジニア の高橋 慶太です。</p>
+
+<p>今回は、Enterキーでフォーカスを遷移させるAngularJSのディレクティブの作り方について書きたいと思います。</p>
+
+<h1>コード</h1>
+
+<p>早速ですが、コードはこんな感じになります。</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html">  // HTML
+  <span class="nt">&lt;body</span> <span class="na">ng-app=</span><span class="s">&quot;app&quot;</span><span class="nt">&gt;</span>
+  ・・・
+  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">name=</span><span class="s">&quot;sample_text1&quot;</span> <span class="na">tabindex=</span><span class="s">&quot;1&quot;</span> <span class="na">move-focus-by-enter-key</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">name=</span><span class="s">&quot;sample_text2&quot;</span> <span class="na">tabindex=</span><span class="s">&quot;2&quot;</span> <span class="na">move-focus-by-enter-key</span><span class="nt">/&gt;</span>
+  ・・・
+  <span class="nt">&lt;/body&gt;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-javascript" data-lang="javascript">  <span class="c1">// AngularJSのDirective</span>
+  <span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;app&quot;</span><span class="p">,</span> <span class="p">[]);</span>
+  <span class="nx">app</span><span class="p">.</span><span class="nx">directive</span><span class="p">(</span><span class="s2">&quot;moveFocusByEnterKey&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">scope</span><span class="p">,</span> <span class="nx">element</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">element</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;keydown keypress&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+              <span class="kd">var</span> <span class="nx">destinationTabIndex</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+              <span class="kd">var</span> <span class="nx">destinationListIndex</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+              <span class="kd">var</span> <span class="nx">targetElementsCondition</span> <span class="o">=</span> <span class="s1">&#39;textarea:enabled:visible,&#39;</span> <span class="o">+</span>
+                  <span class="s1">&#39;input:enabled:visible:not([readonly]),&#39;</span> <span class="o">+</span> 
+                  <span class="s1">&#39;select:enabled:visible,&#39;</span> <span class="o">+</span>
+                  <span class="s1">&#39;button:enabled:visible&#39;</span><span class="p">;</span>
+              <span class="kd">var</span> <span class="nx">keyCode</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">which</span> <span class="o">||</span> <span class="nx">event</span><span class="p">.</span><span class="nx">keyCode</span><span class="p">;</span>
+
+              <span class="k">if</span> <span class="p">(</span><span class="nx">keyCode</span> <span class="o">===</span> <span class="mi">13</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">event</span><span class="p">.</span><span class="nx">shiftKey</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">event</span><span class="p">.</span><span class="nx">altKey</span><span class="p">)</span> <span class="p">{</span>
+                  <span class="kd">var</span> <span class="nx">$list</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">targetElementsCondition</span><span class="p">);</span>
+                  <span class="nx">$list</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
+                      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tabIndex</span> <span class="o">&amp;&amp;</span>
+                          <span class="k">this</span><span class="p">.</span><span class="nx">tabIndex</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+                          <span class="k">this</span><span class="p">.</span><span class="nx">tabIndex</span> <span class="o">&gt;</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">tabIndex</span> <span class="o">&amp;&amp;</span>
+                          <span class="p">(</span><span class="o">!</span><span class="nx">destinationTabIndex</span> <span class="o">||</span> <span class="nx">destinationTabIndex</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">tabIndex</span><span class="p">))</span> <span class="p">{</span>
+                          <span class="nx">destinationTabIndex</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">tabIndex</span><span class="p">;</span>
+                          <span class="nx">destinationListIndex</span> <span class="o">=</span> <span class="nx">index</span><span class="p">;</span>
+                      <span class="p">}</span>
+                  <span class="p">});</span>
+                  <span class="k">if</span> <span class="p">(</span><span class="nx">destinationListIndex</span><span class="p">)</span> <span class="p">{</span>
+                      <span class="nx">$list</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="nx">destinationListIndex</span><span class="p">).</span><span class="nx">focus</span><span class="p">();</span>
+                      <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+                  <span class="p">}</span>
+              <span class="p">}</span>
+          <span class="p">});</span>
+      <span class="p">};</span>
+  <span class="p">});</span>
+</code></pre></div>
+<h1>コード解説</h1>
+
+<h2>JQueryのセレクタを使って対象のタグを絞り込む</h2>
+
+<p>HTMLタグには、input、div、select・・・などなど色々なものがあるので、<br/>
+まずはその中でも「フォーカス遷移可能」なものを検索します！</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript">  <span class="c1">// 検索条件</span>
+  <span class="kd">var</span> <span class="nx">targetElementsCondition</span> <span class="o">=</span> <span class="s1">&#39;textarea:enabled:visible,&#39;</span> <span class="o">+</span>
+      <span class="s1">&#39;input:enabled:visible:not([readonly]),&#39;</span> <span class="o">+</span> 
+      <span class="s1">&#39;select:enabled:visible,&#39;</span> <span class="o">+</span>
+      <span class="s1">&#39;button:enabled:visible&#39;</span><span class="p">;</span>
+  <span class="err">・・・</span>
+  <span class="c1">// 検索処理</span>
+  <span class="kd">var</span> <span class="nx">$list</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">targetElementsCondition</span><span class="p">);</span>
+</code></pre></div>
+<p>上記は、JQueryのセレクタを使った検索処理です。<br/>
+（JQueryのセレクタ： <a href="http://semooh.jp/jquery/api/selectors/" target="_blank">http://semooh.jp/jquery/api/selectors/</a>&gt;）</p>
+
+<p>活性＆表示されているタグのみフォーカスを当てるようにするため、</br>
+「:enabled」「:visible」「not([readonly])」のような条件で絞り込んでいます。<br/>
+※AngularJSでいうと、ng-disabled、ng-hide、ng-readonly属性に対応する処理です！</p>
+
+<p>条件が漏れると、遷移先のタグが表示されていないために、フォーカスがどこにも<br/>
+当たらなくなってしまいます。。。</p>
+
+<h2>キーイベントを拾う</h2>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript">  <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">scope</span><span class="p">,</span> <span class="nx">element</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">element</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;keydown keypress&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="err">・・・</span>
+  <span class="kd">var</span> <span class="nx">keyCode</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">which</span> <span class="o">||</span> <span class="nx">event</span><span class="p">.</span><span class="nx">keyCode</span><span class="p">;</span>
+</code></pre></div>
+<p>上記の記述で、押されたキーの値が変数keyCodeに値が設定されます。<br/>
+ちなみに、Enterキーは13です。</p>
+
+<h2>Enterキー押下時、次にフォーカス遷移するエレメントを探す</h2>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript">  <span class="k">if</span> <span class="p">(</span><span class="nx">keyCode</span> <span class="o">===</span> <span class="mi">13</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">event</span><span class="p">.</span><span class="nx">shiftKey</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">event</span><span class="p">.</span><span class="nx">altKey</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">$list</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">targetElementsCondition</span><span class="p">);</span>
+      <span class="nx">$list</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tabIndex</span> <span class="o">&amp;&amp;</span>
+              <span class="k">this</span><span class="p">.</span><span class="nx">tabIndex</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+              <span class="k">this</span><span class="p">.</span><span class="nx">tabIndex</span> <span class="o">&gt;</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">tabIndex</span> <span class="o">&amp;&amp;</span>
+              <span class="p">(</span><span class="o">!</span><span class="nx">destinationTabIndex</span> <span class="o">||</span> <span class="nx">destinationTabIndex</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">tabIndex</span><span class="p">))</span> <span class="p">{</span>
+              <span class="nx">destinationTabIndex</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">tabIndex</span><span class="p">;</span>
+              <span class="nx">destinationListIndex</span> <span class="o">=</span> <span class="nx">index</span><span class="p">;</span>
+          <span class="p">}</span>
+      <span class="p">});</span>
+  <span class="p">}</span>
+</code></pre></div>
+<p>ここでポイントとなるのは、「!event.shiftKey &amp;&amp; !event.altKey」の条件の部分です。<br/>
+Shift+Enterキー、Alt+Enterキー押下時は、異なる動作をしたいため、<br/>
+上記if文の処理から除外しています。</p>
+
+<p>Shift+Enterキー→フォーカスを戻す処理<br/>
+Alt+Enterキー→textarea内の改行処理</p>
+
+<p>ちなみに、tabindexの値がマイナスの場合はフォーカス遷移させないようにする必要があるので、<br/>
+「this.tabIndex &gt;= 0」の条件も必要です！</p>
+
+<h2>Shift+Enterキー押下時にフォーカスを1つ前に戻す</h2>
+
+<p>最初にご紹介したコードに下記のコードを加えると、Shift+Enterキーを押したときに<br/>
+フォーカスを戻す処理ができます。<br/>
+（符号が一部異なるだけなので、もっとスマートに書けるはずっ！）</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript">  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">keyCode</span> <span class="o">===</span> <span class="mi">13</span> <span class="o">&amp;&amp;</span> <span class="nx">event</span><span class="p">.</span><span class="nx">shiftKey</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">event</span><span class="p">.</span><span class="nx">altKey</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">$list</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">targetElementsCondition</span><span class="p">);</span>
+      <span class="nx">$list</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tabIndex</span> <span class="o">&amp;&amp;</span>
+              <span class="k">this</span><span class="p">.</span><span class="nx">tabIndex</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+              <span class="k">this</span><span class="p">.</span><span class="nx">tabIndex</span> <span class="o">&lt;</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">tabIndex</span> <span class="o">&amp;&amp;</span>
+              <span class="p">(</span><span class="o">!</span><span class="nx">destinationTabIndex</span> <span class="o">||</span> <span class="nx">destinationTabIndex</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">tabIndex</span><span class="p">))</span> <span class="p">{</span>
+              <span class="nx">destinationTabIndex</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">tabIndex</span><span class="p">;</span>
+              <span class="nx">destinationListIndex</span> <span class="o">=</span> <span class="nx">index</span><span class="p">;</span>
+          <span class="p">}</span>
+      <span class="p">});</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">destinationListIndex</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">$list</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="nx">destinationListIndex</span><span class="p">).</span><span class="nx">focus</span><span class="p">();</span>
+          <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+</code></pre></div>
+<h2>Alt+Enterキーでtextarea内改行</h2>
+
+<p>「!event.altKey」を条件を加えることで、Alt+Enterキーが押されたときは、</br>
+上記のif文の処理がスルーされます。<br/>
+スルーされると、このディレクティブを使わない場合と全く同じ処理が行われることなります。</br>
+この性質を利用し、textarea内にて改行させることができます！</p>
+
+<h2>spaceキーでボタン押下処理</h2>
+
+<p>ボタンをフォーカス遷移に含めていると、これもエンターキーでフォーカス遷移されちゃいます。<br/>
+この場合、ボタンにフォーカスが当たっている状態でスペースキーを押すことで、<br/>
+ボタン押下することができます。<br/>
+ちなみに、上記のコードの場合、フォーカス遷移の一番最後にボタンが配置されていた場合は、<br/>
+エンターキーでもボタンが押せます。</br>
+「tabindex順に入力していって最後に保存！」「途中にボタンはないよ！」というような画面では、<br/>
+この話は気にしなくて良いですね！</p>
+
+<h2>フォーカス遷移</h2>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript">  <span class="nx">$list</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="nx">destinationListIndex</span><span class="p">).</span><span class="nx">focus</span><span class="p">();</span>
+</code></pre></div>
+<p>上記でフォーカスを当てることができます。</p>
+
+<h1>エンジニア募集中！</h1>
+
+<p>ビジネスバンクグループではエンジニアを募集中しています。</p>
+
+<p>弊社が採用しているテクノロジや開発環境に興味を持った方は、
+<a href="http://bbank.jp/allin/recruit/">ここから是非エントリー</a> を！</p>
+
+        </section>
+
+        <footer>
+            <address>
+               <img src="/images/keitatakahashi.png">
+               <p><strong>
+                   
+                       高橋 慶太
+                   
+               </strong><br>
+                <span class="muted">Software Engineer</span>
+                </p>
+            </address>
+        </footer>
+
+        
+    </div>
+</article>
+
+
+        <footer class="site-footer">
+            <div class="container">
+                &copy; 2018
+
+                <nav>
+                    <a href="http://bbank.jp/">BUSINESS BANK GROUP, Inc.</a> &middot;
+                    <a href="/">Blog</a> &middot;
+                    <a href="https://www.youtube.com/watch?v=o0_4j_SNRwE">Product</a> &middot; 
+                    
+                </nav>
+
+                <nav class="social">
+                    
+                    
+                    <a href="/feed.xml" title="RSS Feed">
+                        <i class="icon icon-rss black"></i>
+                    </a>
+                </nav>
+            </div>
+        </footer>
+
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+<script type="text/javascript">
+    (function() {
+        var dr = document.createElement('script');
+        dr.type = 'text/javascript'; dr.async = true;
+        dr.src = '//share.donreach.com/buttons.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dr);
+    })();
+</script>
+
+    </body>
+</html>
